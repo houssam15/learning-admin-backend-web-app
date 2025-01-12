@@ -15,7 +15,7 @@ export class UserService {
     ){}
 
       async create(registerDto: RegisterDto){
-        const { email, password, name } = registerDto;
+        const { email, password, username } = registerDto;
         const existingUser = await this.userRepository.findOne({ where: { email:registerDto.email } });
         if (existingUser) {
           throw new ConflictException('User already exists with this email');
@@ -24,15 +24,22 @@ export class UserService {
           this.userRepository.create({
             email,
             password,
-            name,
+            username,
             role: Role.User
           })
         );
-        return {id:user.id,email:user.email,name:user.name,role:user.role};
+        return {id:user.id,email:user.email,username:user.username,role:user.role};
       }   
       
       async findByEmail(email: string): Promise<User | undefined> {
-        return await this.userRepository.findOne({ where: { email },select: ['id', 'email', 'name', 'password', 'role']});
+        return await this.userRepository.findOne({ where: { email },select: ['id', 'email', 'username', 'password', 'role']});
+      }
+
+      async findByEmailOrUsername(emailOrUsername:string):Promise<User | undefined>{
+        return await this.userRepository.findOne({where: [
+          {email:emailOrUsername},
+          {username:emailOrUsername}
+        ], select: ['id', 'email', 'username', 'password', 'role']});
       }
 
       async findById(id: number): Promise<User | undefined> {

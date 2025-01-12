@@ -12,9 +12,9 @@ export class User {
     @Column({select:false})
     password: string;
   
-    @Column()
-    name: string;
+    @Column({ unique: true })
+    username: string;
   
-    @Column({ default: 'user' }) 
+    @Column({ default: Role.User }) 
     role: Role;
 }

@@ -8,6 +8,6 @@ export class RegisterDto {
     @IsNotEmpty()
     password: string;
     @IsNotEmpty()
-    name: string;
-  }
+    username: string;
+}
   

@@ -19,14 +19,14 @@
             return await this.userService.create({
                 email:registerDto.email,
                 password: await bcrypt.hash(registerDto.password, 10),
-                name:registerDto.name
+                username:registerDto.username
             });
         }
 
         // Login: Check if user exists, validate password, and issue a token
         async login(loginDto: LoginDto) {
             // Find user by email
-            const user = await this.userService.findByEmail(loginDto.email)
+            const user = await this.userService.findByEmailOrUsername(loginDto.emailOrUsername)
             if (!user) {
                 throw new NotFoundException('User not found');
             }
@@ -43,6 +43,10 @@
     // Validate the user based on the JWT payload (used in Passport strategy)
     async validateUser(payload: any) {
             return { id: payload.sub, email: payload.email ,role:payload.role};
+    }
+
+    async getMe(data:any){
+        return await this.userService.findById(data.id)
     }
     
     }

@@ -18,5 +18,9 @@ export default () => ({
       validUploadsMimeType:process.env.VALID_UPLOADS_MIME_TYPES.split(',')||[],
       maxFileSize:parseInt(process.env.MAX_FiLE_SIZE_IN_BYTES, 10),
       uploadDirectory: process.env.UPLOAD_DIRECTORY
+    },
+    cors:{
+      allowAllOrigins:process.env.ALLOW_ALL_ORIGINS=="true",
+      allowedOrigins:process.env.ALLOWED_ORIGINS.split(',')||[]
     }
   });
